@@ -78,7 +78,7 @@ public:
                 Story *newEvent = new Story(description, eventNumber, leftEvent, rightEvent);
 
                 // Create a new node with the story data
-                Node<Story>* newNode = new Node<Story>(*newEvent);
+                Node<T>* newNode = new Node<T>(*newEvent);
 
                 if (root == nullptr) {
                     root = newNode; // Set the root to the first node
@@ -98,26 +98,27 @@ public:
         Node<Story>* currentEvent = root; // Start at the root (the first event)
         while (currentEvent->data.eventNumber != -1) {
             int x = 0;
-            cout << currentEvent->data.description << endl;
+            cout << currentEvent->data.description << endl; // Print out the event description
 
-            // Options displayed here
-
-            if (currentEvent->data.leftEventNumber == -1 && currentEvent->data.rightEventNumber == -1) {
+            if (currentEvent->data.leftEventNumber == -1 && currentEvent->data.rightEventNumber == -1) { // If both left/right pointers are invalid (current node is a leaf)
                 break;
             }
 
-            cout << "Enter choice: ";
-            cin >> x;
+            // General idea of the code below found on StackOverflow after getting stuck for a bit
+            while (cout << "Enter choice: " && !(cin>>x) || (x != 1 && x != 2)) { // Ensures proper input is given
+                cin.clear(); // Clears the input
+                cin.ignore(1000, '\n'); //Disregards past input, allowing user to try again
+            }
 
-            if (x == 1) {
+            if (x == 1) { // Left choice is selected
                 if (currentEvent->data.leftEventNumber != -1) {
-                    currentEvent = currentEvent->left;
+                    currentEvent = currentEvent->left; // Set current event to the left event
                 } else {
                     break;
                 }
-            } else if (x == 2) {
+            } else if (x == 2) { // Right choice is selected
                 if (currentEvent->data.rightEventNumber != -1) {
-                    currentEvent = currentEvent->right;
+                    currentEvent = currentEvent->right; // Set current event to the right event
                 } else {
                     break;
                 }

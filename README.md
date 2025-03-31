@@ -11,7 +11,7 @@
 (Provide a brief summary of your RPG game. Describe how it uses a decision tree and how the player interacts with it.)
 
 Example:
-> This project implements a text-based RPG using a **binary decision tree**. Each game event is represented as a node, and the player progresses by choosing between two paths at each stage. The storyline is loaded from an external text file (`story.txt`), which is parsed to construct the decision tree. The game ends when a leaf node (with `-1` as left and right children) is reached.
+> The theme of my RPG is a congressional campaign. My project creates a binary decision tree from a given list of 40 possible events. The events are all listed on a separate "story.txt" file. The program reads through each event and creates a network of nodes using preorder traversal to add to the tree. The player is able to go down different storylines based on their decisions, and the program ends when they reach an ending where the left and right child are set to -1.
 
 ---
 
@@ -58,7 +58,7 @@ Example:
 - How do you ensure nodes are properly linked?
   - I made a preorder traversal function to loop through the entire tree to make sure events are properly linked to one another. Preorder starts at the root, and then looks at the left node and right node. Even if a node is a child of one node, the function continues to loop through the rest of the tree in case multiple events lead to the same event.
 - Any challenges faced while handling file input? 
-  - I had problems originally trying to implement the getline() function to read the contents of each line. I noticed that each of the tutorials provided for the streams implemented the file reading differently.
+  - I had problems originally trying to implement the getline() function to read the contents of each line. At one point, the program skipped the entire first line and only started reading data from the second line because the way I ordered the code. I eventually fixed it via a nested while loop.
 
 ---
 
@@ -66,7 +66,7 @@ Example:
 (Describe one or more debugging challenges you faced and how you fixed them.)
 
 Example:
-> Initially, my program was crashing when trying to access an uninitialized node. I realized it was because I was not properly checking for `nullptr` before accessing child nodes, so I added a check to prevent accessing uninitialized memory.
+> I had problems creating the Node objects for the tree. Originally, I didn't use the '*' to denote it as a pointer which gave me a "No marching constructor for initialization of Node<Story>" compiler error. Because I set the type to the generic <T>, the IDE didn't point out my error. Eventually when I set the type to <Story> temporarily, the IDE pointed out my error which I was able to fix.
 
 ---
 
@@ -124,7 +124,7 @@ Process finished with exit code 0
 (Describe at least one edge case you tested and its outcome.)
 
 Example:
-> I tested a scenario where the player reaches a dead-end (leaf node) and ensured the program correctly ends the game.
+> There was a possibility the player did not put in a correct value for the input (something other than 1 or 2). If it was any other number, the program would loop back because it was still an int value (just not the correct one) but any other data type broke the program. I couldn't figure it out, so I looked up how to fix this error and found out that I needed to clear the player's input (cin) in order for the while loop to properly work. After a bit of fiddling with the edge cases, I got it to work.
 
 ---
 
