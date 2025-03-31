@@ -18,8 +18,11 @@ public:
     // TODO: Constructor
     GameDecisionTree() : root(nullptr) {}
 
-    void checkEachEvent(Node<Story>* root, Node<Story>* newNode) { // Preorder
+    // Traverses the tree to set the new node in the correct place(s) using recursion
+    void checkEachEvent(Node<Story>* root, Node<Story>* newNode) { // Preorder traversal
         //cout<<"Testing"<<endl;
+
+        // Start at the root
         Node<Story>* temp = root;
         if (temp == nullptr) {
             return;
@@ -29,8 +32,9 @@ public:
             } else if (temp->data.rightEventNumber == newNode->data.eventNumber) {
                 temp->right = newNode;
             }
-            checkEachEvent(temp->left, newNode);
-            checkEachEvent(temp->right, newNode);
+
+            checkEachEvent(temp->left, newNode); // Check the left side of the node
+            checkEachEvent(temp->right, newNode); // Check the right side of the node
         }
     }
 
@@ -54,13 +58,13 @@ public:
                 int counter = 0;
 
                 while (getline(s, currentData, delimiter)) {
-                    if (counter == 0) {
+                    if (counter == 0) { // Item is the event number
                         eventNumber = stoi(currentData);
-                    } else if (counter == 1) {
+                    } else if (counter == 1) { // Item is the description
                         description = currentData;
-                    } else if (counter == 2) {
+                    } else if (counter == 2) { // Item is the left event path
                         leftEvent = stoi(currentData);
-                    } else if (counter == 3) {
+                    } else if (counter == 3) { // Item is the right event path
                         rightEvent = stoi(currentData);
                     }
 
@@ -69,33 +73,40 @@ public:
 
                 // No matching constructor for initialization??
                 // Incompatible pointer types
+
+                // Create a new story event using the given event data
                 Story *newEvent = new Story(description, eventNumber, leftEvent, rightEvent);
+
+                // Create a new node with the story data
                 Node<Story>* newNode = new Node<Story>(*newEvent);
 
                 if (root == nullptr) {
-                    root = newNode;
+                    root = newNode; // Set the root to the first node
                 } else {
-                    checkEachEvent(root, newNode);
+                    checkEachEvent(root, newNode); // Use the function to build the tree
                 }
             }
 
-            infile.close();
+            infile.close(); // Close the file
         } else {
-            cout << "No file was found" << endl;
+            cout << "No file was found?" << endl;
         }
     }
 
     // TODO: Function to start the game and traverse the tree based on user input
     void playGame() {
-        Node<Story>* currentEvent = root;
+        Node<Story>* currentEvent = root; // Start at the root (the first event)
         while (currentEvent->data.eventNumber != -1) {
             int x = 0;
-            cout << currentEvent->data.description << "Do you: " << endl;
+            cout << currentEvent->data.description << endl;
 
             // Options displayed here
 
-            cout << "Enter choice: ";
+            if (currentEvent->data.leftEventNumber == -1 && currentEvent->data.rightEventNumber == -1) {
+                break;
+            }
 
+            cout << "Enter choice: ";
             cin >> x;
 
             if (x == 1) {
